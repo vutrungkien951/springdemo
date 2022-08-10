@@ -5,6 +5,7 @@ com\vtk\pojo\User.class
 com\vtk\pojo\SaleOrder_.class
 com\vtk\services\impl\CategoryServiceImpl.class
 com\vtk\controllers\StatController.class
+.netbeans_automatic_build
 com\vtk\configs\DispatcherServletInit.class
 com\vtk\pojo\User_.class
 com\vtk\configs\WebAppContextConfig.class
@@ -23,5 +24,6 @@ com\vtk\controllers\ProductController.class
 com\vtk\pojo\Product.class
 com\vtk\repository\impl\CategoryRepositoryImpl.class
 com\vtk\pojo\OrderDetail_.class
+com\vtk\formatters\CategoryFormatter.class
 com\vtk\controllers\IndexController.class
 com\vtk\configs\HibernateConfig.class

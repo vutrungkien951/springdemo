@@ -45,6 +45,11 @@ public class ProductServiceImpl implements ProductService{
     public List<Object> renueve(int quarter, int year) {
       return this.productRepository.renueve(quarter, year);
     }
+
+    @Override
+    public boolean addProduct(Product p) {
+        return this.productRepository.addProduct(p);
+    }
     
     
 }

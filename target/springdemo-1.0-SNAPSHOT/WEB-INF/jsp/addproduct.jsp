@@ -15,21 +15,32 @@
     </head>
     <body>
 
-        <c:url value="/addproduct" var="action" />
+        <c:url value="/admin/addproduct" var="action" />
         <form:form 
             action="${action}"
             method="POST"
             modelAttribute="product"
             enctype="multipart/form-data"
             >
-            <h1>Add product</h1>
+            <form:errors path="*" element="div" />
+            <h1 class="text-center text-danger">Add product</h1>
             <div class="mb-3 mt-3">
                 <label for="name" class="form-label">Name:</label>
                 <form:input type="text" class="form-control" path="name" />
+                <form:errors path="name" cssClass="text-danger" />
+            </div>
+            <div class="mb-3 mt-3">
+                <label for="categoryId" class="form-label">Category:</label>
+                <form:select path="categoryId">
+                    <c:forEach items="${categories}" var="c">
+                        <form:option value="${c.id}">${c.name}</form:option>
+                    </c:forEach>
+                </form:select> 
             </div>
             <div class="mb-3">
                 <label for="price" class="form-label">Price:</label>
                 <form:input type="currency" class="form-control" path="price"/>
+                <form:errors path="price" cssClass="text-danger"/>
             </div>
             <div class="mb-3">
                 <label for="image" class="form-label">Image</label>

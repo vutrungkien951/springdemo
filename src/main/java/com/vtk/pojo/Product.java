@@ -24,6 +24,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -57,12 +59,15 @@ public class Product implements Serializable {
     private Integer id;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 50)
+    @Size(min = 1, max = 50, message = "{product.name.sizeMsg}")
     @Column(name = "name")
     private String name;
     @Size(max = 255)
     @Column(name = "description")
     private String description;
+    @NotNull(message = "{product.price.notNullMsg}")
+    @Min(value=100000, message = "{product.price.minMsg}")
+    @Max(value=100000000, message = "{product.price.maxMsg}")
     @Column(name = "price")
     private Long price;
     @Size(max = 50)
@@ -79,6 +84,7 @@ public class Product implements Serializable {
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     @JsonIgnore
+    @NotNull(message = "{product.categoryId.notNullMsg}")
     private Category categoryId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "productId")
     @JsonIgnore

@@ -21,6 +21,10 @@ Software Foundation//DTD Tiles Configuration 3.0//EN"
         <put-attribute name="title" value="Product" />
         <put-attribute name="content" value="/WEB-INF/jsp/products.jsp" />
     </definition>
+    <definition name="addproduct" extends="baseLayout">
+        <put-attribute name="title" value="Product" />
+        <put-attribute name="content" value="/WEB-INF/jsp/addproduct.jsp" />
+    </definition>
     <definition name="stats" extends="baseLayout">
         <put-attribute name="content" value="/WEB-INF/jsp/stats.jsp" />
     </definition>

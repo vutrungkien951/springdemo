@@ -130,4 +130,17 @@ public class ProductRepositoryImpl implements ProductRepository {
         Query q = session.createQuery(query);
         return q.getResultList();
     }
+
+    @Override
+    public boolean addProduct(Product p) {
+        Session session = this.sessionFactory.getObject().getCurrentSession();
+        
+        try{
+            session.save(p);
+            return true;
+        }catch(Exception ex){
+            ex.printStackTrace();
+            return false;
+        }
+    }
 }

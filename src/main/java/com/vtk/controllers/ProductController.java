@@ -7,10 +7,14 @@ package com.vtk.controllers;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.vtk.pojo.Product;
+import com.vtk.services.ProductService;
 import java.io.IOException;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,6 +31,9 @@ public class ProductController {
     @Autowired
     private Cloudinary cloudinary;
     
+    @Autowired
+    private ProductService productService;
+    
     @GetMapping("/products")
     public String products(){
         
@@ -37,11 +44,12 @@ public class ProductController {
     public String addProduct(@ModelAttribute (value="product") Product product){
         product = new Product();
         
-        return "products";
+        return "addproduct";
     }
     
     @PostMapping("/addproduct")
-    public String addProductProcess(@ModelAttribute (value="product") Product product,
+    public String addProductProcess(@ModelAttribute (value="product") @Valid Product product,
+            BindingResult result,
             HttpServletRequest request) throws IOException{
 //        MultipartFile img = product.getImg();
 //        String rootDir = request.getSession().getServletContext().getRealPath("/");
@@ -51,10 +59,16 @@ public class ProductController {
 //                + product.getName() + ".png"));
 //            return "redirect:/";
 //        }
+        if(result.hasErrors()){
+            return "addproduct";
+        }
+        
+
         try{
-            cloudinary.uploader().upload(product.getImg().getBytes(), 
+            Map results = cloudinary.uploader().upload(product.getImg().getBytes(), 
                  ObjectUtils.asMap("resource_type", "auto"));
-            
+            product.setImage(results.get("secure_url").toString());
+            this.productService.addProduct(product);
             return "redirect:/";
         }catch (IOException ex){
             System.err.println(ex.getMessage());

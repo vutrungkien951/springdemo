@@ -18,4 +18,5 @@ public interface ProductService {
     Product getProductById(int productId);
     List<Object> countProdByCate();
     List<Object> renueve(int quarter, int year);
+    boolean addProduct(Product p);
 }
