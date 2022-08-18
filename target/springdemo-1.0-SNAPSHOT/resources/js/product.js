@@ -1,19 +1,19 @@
 
-function deleteProduct(endpoint, id){
-    let d = document.getElementById("load" + id);
-    let p = document.getElementById("div" + id);
-    
-    alert(id);
-    p.innerHTML = "HELLO";
-
+function deleteProduct(endpoint, id, obj) {
+    let d = document.getElementById("load" + id)
     d.style.display = "block";
-    
+    obj.style.display = "none";
+
     fetch(endpoint, {
         method: "delete"
-    }).then(function(res) {
+    }).then(function (res) {
         if (res.status === 204)
-            location.reload();
-    }).catch(function(err) {
+        {
+            let r = document.getElementById("row" + id);
+            r.style.display = "none";
+        }
+
+    }).catch(function (err) {
         console.error(err)
     })
 }

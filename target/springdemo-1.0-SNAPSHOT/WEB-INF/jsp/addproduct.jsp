@@ -22,7 +22,7 @@
             modelAttribute="product"
             enctype="multipart/form-data"
             >
-            <form:errors path="*" element="div" />
+            <form:errors path="*" element="div class='alert alert-danger'" />
             <h1 class="text-center text-danger">Add product</h1>
             <div class="mb-3 mt-3">
                 <label for="name" class="form-label">Name:</label>

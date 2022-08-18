@@ -5,27 +5,24 @@
 --%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<h1 id="hello">Hello world</h1>
-<table class="table table-striped">
-    <thead>
-      <tr>
-        <th>ID</th>
+<h1 class="text-center text-danger">List product</h1>
+<div class="spinner-border text-warning" id="myLoading"></div>
+<table class="table">
+    <tr>
+        <th>Id</th>
         <th>Name</th>
         <th>Image</th>
         <th>Price</th>
-        <th>Delete</th>
-      </tr>
-    </thead>
+        <th></th>
+    </tr>
     <tbody id="adminProd">
-        
+
     </tbody>
-    
-    <script src="<c:url value="/js/product.js" />"></script>
-    <script>
-        <c:url value="/api/products" var="endpoint"/>
-        
-        window.onload = function(){
-            loadProduct('${endpoint}');
-        }
-    </script>
 </table>
+<script src="<c:url value="/js/product.js" />" />
+<script>
+    <c:url value="/api/products" var="u" />
+    window.onload = function () {
+        loadProduct("${u}")
+    }
+</script>

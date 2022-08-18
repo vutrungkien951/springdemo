@@ -7,6 +7,18 @@ package com.vtk.configs;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.vtk.formatters.CategoryFormatter;
+import com.vtk.validator.PassValidator;
+import com.vtk.validator.ProductNameValidator;
+import com.vtk.validator.WebAppValidator;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import java.util.HashSet;
+import java.util.Set;
+import javax.validation.Constraint;
+import javax.validation.Payload;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -38,7 +50,8 @@ import org.springframework.web.servlet.view.JstlView;
 @ComponentScan(basePackages = {
     "com.vtk.controllers",
     "com.vtk.services",
-    "com.vtk.repository"
+    "com.vtk.repository",
+    "com.vtk.validator"
 })
 public class WebAppContextConfig implements WebMvcConfigurer {
 
@@ -57,7 +70,6 @@ public class WebAppContextConfig implements WebMvcConfigurer {
 //
 //        return r;
 //    }
-
     @Bean
     public MessageSource messageSource() {
         ResourceBundleMessageSource resource = new ResourceBundleMessageSource();
@@ -106,11 +118,10 @@ public class WebAppContextConfig implements WebMvcConfigurer {
                 "api_secret", "FbSAwm5m_PNcs75vFcnLdlJJL8A",
                 "secure", true
         ));
-        
-        
+
         return cloudinary;
     }
-    
+
     @Bean
     public Validator validator() {
         LocalValidatorFactoryBean bean
@@ -120,7 +131,7 @@ public class WebAppContextConfig implements WebMvcConfigurer {
     }
 
     @Override
-    public Validator getValidator(){
+    public Validator getValidator() {
         return validator();
     }
 
@@ -128,4 +139,16 @@ public class WebAppContextConfig implements WebMvcConfigurer {
     public void addFormatters(FormatterRegistry registry) {
         registry.addFormatter(new CategoryFormatter());
     }
+    
+    @Bean
+    public WebAppValidator userValidator(){
+        Set<Validator> springValidators = new HashSet<>();
+        springValidators.add(new PassValidator());
+        
+        WebAppValidator webAppValidator = new WebAppValidator();
+        webAppValidator.setSpringValidators(springValidators);
+        
+        return webAppValidator;
+    }
+
 }

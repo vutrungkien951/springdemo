@@ -8,14 +8,18 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.vtk.pojo.Product;
 import com.vtk.services.ProductService;
+import com.vtk.validator.PriceValidator;
 import java.io.IOException;
+import java.util.Date;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,6 +37,14 @@ public class ProductController {
     
     @Autowired
     private ProductService productService;
+    
+    @Autowired
+    private PriceValidator priceValidator;
+    
+    @InitBinder
+    public void initBinder(WebDataBinder binder){
+        binder.setValidator(priceValidator);
+    }
     
     @GetMapping("/products")
     public String products(){
@@ -68,6 +80,7 @@ public class ProductController {
             Map results = cloudinary.uploader().upload(product.getImg().getBytes(), 
                  ObjectUtils.asMap("resource_type", "auto"));
             product.setImage(results.get("secure_url").toString());
+            product.setCreatedDate(new Date());
             this.productService.addProduct(product);
             return "redirect:/";
         }catch (IOException ex){

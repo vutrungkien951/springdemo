@@ -19,31 +19,31 @@
     </head>
     <body>
         <div class="container">
-          <ul class="pagination">
-            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#">Next</a></li>
-          </ul>
-          <ul>
-	</ul>
-       
-          <div class="row">
+            <ul class="pagination">
+                <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item"><a class="page-link" href="#">Next</a></li>
+            </ul>
+            <ul>
+            </ul>
+
+            <div class="row">
                 <c:forEach items="${products}" var="p">
                     <c:url value="/${p.id}" var="productId"/>
                     <div class="col-sm-12 col-12 col-lg-3">
                         <div class="card">
-                            <img class="card-img-top" src="data:image/jpg;base64,${p.image}" alt="${p.name}">
+                            <img class="card-img-top" src="${p.image}" alt="${p.name}">
                             <div class="card-body">
-                              <h4 class="card-title">${p.name}</h4>
-                              <p class="card-text">${p.price} VND</p>
-                              <a href="${productId}" class="btn btn-primary">Xem chi tiết</a>
+                                <h4 class="card-title">${p.name}</h4>
+                                <p class="card-text">${p.price} VND</p>
+                                <a href="${productId}" class="btn btn-primary">Xem chi tiết</a>
                             </div>
                         </div>
                     </div>
                 </c:forEach>
-          </div> 
+            </div> 
         </div>
     </body>
 </html>

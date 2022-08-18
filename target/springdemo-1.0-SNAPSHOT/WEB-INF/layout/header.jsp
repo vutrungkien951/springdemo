@@ -31,12 +31,16 @@
                     </c:forEach>
                     <li class="nav-item"><a class="nav-link" href="?lang=en"><fmt:message key="label.lang.en" /></a></li>
                     <li class="nav-item"><a class="nav-link" href="?lang=vn"><fmt:message key="label.lang.vn" /></a></li>
+                    <li class="nav-item"><a class="nav-link" href="<c:url value="/login"/>"><fmt:message key="label.login" /></a></li>
+                    <li class="nav-item"><a class="nav-link" href="<c:url value="/register"/>"><fmt:message key="label.register" /></a></li>
+                    <li class="nav-item"><a class="nav-link" href="<c:url value="/admin/addproduct"/>">Abc</a></li>
                 </ul>
                 <c:url value="/" var="action" />
                 <form class="d-flex" action="${action}">
                     <input class="form-control me-2" name="kw" type="text" placeholder="<spring:message code="label.search.textbox" />" />
                     <button class="btn btn-primary" type="submit"><spring:message code="label.search" /></button>
                 </form>
+
             </div>
         </div>
 

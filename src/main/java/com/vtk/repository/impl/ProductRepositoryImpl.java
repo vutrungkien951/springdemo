@@ -143,4 +143,23 @@ public class ProductRepositoryImpl implements ProductRepository {
             return false;
         }
     }
+
+    @Override
+    public boolean deleteProduct(int productId) {
+         Session session = this.sessionFactory.getObject().getCurrentSession();
+         
+         try{
+            Product p = session.get(Product.class, productId);
+            session.delete(p);
+            return true;
+         }catch(Exception ex){
+            ex.printStackTrace();
+            return false;
+         }
+    }
+
+    @Override
+    public boolean checkProductName(String value) {
+        return false;
+    }
 }

@@ -5,6 +5,9 @@
 package com.vtk.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.vtk.configs.WebAppContextConfig;
+import com.vtk.validator.ProductName;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
@@ -12,6 +15,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -57,11 +61,14 @@ public class Product implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50, message = "{product.name.sizeMsg}")
     @Column(name = "name")
+    @ProductName(message = "{product.name.error.productNameMsg}")
     private String name;
+    
     @Size(max = 255)
     @Column(name = "description")
     private String description;
@@ -82,8 +89,9 @@ public class Product implements Serializable {
     @Column(name = "active")
     private Boolean active;
     @JoinColumn(name = "category_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
+//    @JsonIgnore
+    @JsonManagedReference
     @NotNull(message = "{product.categoryId.notNullMsg}")
     private Category categoryId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "productId")

@@ -26,8 +26,8 @@ public class StatController {
 
     @GetMapping("/stats")
     public String stats(Model model,
-            @RequestParam(value = "quarter", required = false) int quarter,
-            @RequestParam(value = "year", defaultValue = "2022") int year) {
+            @RequestParam(value = "quarter", defaultValue = "1") int quarter,
+            @RequestParam(value = "year", defaultValue = "2020") int year) {
         model.addAttribute("cateStats", this.productService.countProdByCate());
         model.addAttribute("renueve", this.productService.renueve(quarter, year));
 
