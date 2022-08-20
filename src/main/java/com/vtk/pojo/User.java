@@ -4,7 +4,10 @@
  */
 package com.vtk.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -22,6 +25,8 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  *
@@ -41,7 +46,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "User.findByPassword", query = "SELECT u FROM User u WHERE u.password = :password"),
     @NamedQuery(name = "User.findByActive", query = "SELECT u FROM User u WHERE u.active = :active"),
     @NamedQuery(name = "User.findByUserRole", query = "SELECT u FROM User u WHERE u.userRole = :userRole")})
-public class User implements Serializable {
+public class User implements Serializable{
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -93,13 +98,15 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "userId")
     private Set<SaleOrder> saleOrderSet;
 
-    public User() {
-    }
-
     public User(Integer id) {
         this.id = id;
     }
 
+    public User() {
+    }
+    
+    
+    
     public User(Integer id, String firstName, String lastName, String email, String phone, String username, String password, String userRole) {
         this.id = id;
         this.firstName = firstName;
@@ -230,5 +237,6 @@ public class User implements Serializable {
     public void setConfirmPassword(String confirmPassword) {
         this.confirmPassword = confirmPassword;
     }
+
     
 }

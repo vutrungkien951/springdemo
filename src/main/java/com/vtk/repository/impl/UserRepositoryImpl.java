@@ -7,6 +7,10 @@ package com.vtk.repository.impl;
 import com.vtk.pojo.User;
 import com.vtk.repository.UserRepository;
 import java.util.List;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.stereotype.Repository;
@@ -30,7 +34,20 @@ public class UserRepositoryImpl implements UserRepository{
 
     @Override
     public List<User> getUsers(String username) {
-        return null;
+        List<User> users;
+        Session session = sessionFactory.getObject().getCurrentSession();
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<User> cr = builder.createQuery(User.class);
+
+        Root<User> root = cr.from(User.class);
+
+        CriteriaQuery<User> query = cr.select(root);
+        if (!username.isEmpty())
+            query.where(builder.equal(root.get("username"), username));
+
+        users = session.createQuery(query).getResultList();
+        
+        return users;
     }
     
 }

@@ -4,6 +4,7 @@
  */
 package com.vtk.configs;
 
+import com.vtk.pojo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -12,8 +13,12 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
  *
@@ -22,12 +27,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Configuration
 @EnableWebSecurity
 @ComponentScan(basePackages = {
-    "com.vtk",
-})
+    "com.vtk",})
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private UserDetailsService userDetailsService;
+    private UserDetailsService myUserDetailsService;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -35,28 +39,37 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth)
-            throws Exception {
-        auth.userDetailsService(userDetailsService)
-                .passwordEncoder(passwordEncoder());
+    protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
+//        auth.inMemoryAuthentication()
+//                .withUser("user").password(passwordEncoder().encode("password")).roles("USER")
+//                .and()
+//                .withUser("admin").password(passwordEncoder().encode("password")).roles("ADMIN");
+        auth.userDetailsService(myUserDetailsService).passwordEncoder(passwordEncoder());
     }
 
     @Override
-    protected void configure(HttpSecurity http)
-            throws Exception {
-        http.formLogin().loginPage("/login")
-                .usernameParameter("username")
-                .passwordParameter("password");
-        http.formLogin().defaultSuccessUrl("/")
-                .failureUrl("/login?error");
-        http.logout().logoutSuccessUrl("/login");
-        http.exceptionHandling()
-                .accessDeniedPage("/login?accessDenied");
-        http.authorizeRequests().antMatchers("/").permitAll()
-                .antMatchers("/**/add")
-                .access("hasRole('ROLE_ADMIN')")
-                .antMatchers("/**/pay")
-                .access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')");
-        http.csrf().disable();
+    protected void configure(final HttpSecurity http) throws Exception {
+
+        http.authorizeRequests()
+                .antMatchers("/login").permitAll()
+                .antMatchers("/register").permitAll()
+                //                .antMatchers("/").hasAnyRole("USER", "ADMIN")
+                .antMatchers("/").authenticated()
+                .antMatchers("/admin/**").hasAnyRole("ADMIN")
+                .and()
+                .formLogin()
+                .loginPage("/login")
+                .defaultSuccessUrl("/")
+                .failureUrl("/login?error=true")
+                .permitAll()
+                .and()
+                .logout()
+                .logoutSuccessUrl("/login?logout=true")
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID")
+                .permitAll()
+                .and()
+                .csrf()
+                .disable();
     }
 }

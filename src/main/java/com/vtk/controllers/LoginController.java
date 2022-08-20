@@ -24,22 +24,24 @@ import org.springframework.web.bind.annotation.PostMapping;
  */
 @Controller
 public class LoginController {
+
     @Autowired
     private UserService userService;
     @Autowired
     private WebAppValidator userValidator;
-    
+
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         binder.setValidator(userValidator);
     }
-    
+
     @GetMapping(value = "/login")
     public String loginView(Model model) {
         model.addAttribute("user", new User());
 
         return "login";
     }
+
     
     @GetMapping(value = "/register")
     public String registerView(Model model) {

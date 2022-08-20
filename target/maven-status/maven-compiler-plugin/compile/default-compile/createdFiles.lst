@@ -7,6 +7,7 @@ com\vtk\services\impl\UserServiceImpl.class
 com\vtk\pojo\SaleOrder.class
 com\vtk\pojo\User.class
 com\vtk\pojo\SaleOrder_.class
+com\vtk\pojo\MyUserPrincipal.class
 com\vtk\services\impl\CategoryServiceImpl.class
 com\vtk\repository\impl\UserRepositoryImpl.class
 com\vtk\controllers\StatController.class

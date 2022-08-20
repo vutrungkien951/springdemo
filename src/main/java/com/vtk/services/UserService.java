@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
  *
  * @author kien
  */
-public interface UserService extends UserDetailsService{
+public interface UserService extends UserDetailsService {
     void addUser(User user);
     User getUserByUsername(String username);
 }
